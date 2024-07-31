@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Maintenance Form</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Link to Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f7f4; /* Light greenish-blue background */
+            color: #0b3954; /* Dark blue text */
+        }
+
+        /* Header styles */
+        header {
+            background-color: #1fa7c2; /* Teal */
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px; /* Adjust height as needed */
+        }
+        
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff; /* White text color */
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #1c7e91; /* Darker teal on hover */
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1fa7c2; /* Dark teal */
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #fff; /* White text color */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #1c7e91; /* Darker teal on hover */
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff; /* White */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        /* Heading styles */
+        h2 {
+            color: #0b3954; /* Dark blue */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Form styles */
+        form {
+            display: grid;
+            gap: 15px;
+        }
+
+        label {
+            color: #0e0d0d76; /* Dark teal */
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], input[type="file"] {
+            width: calc(100% - 20px); /* Adjusted for padding */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #1fa7c2; /* Light blue-gray */
+            border-radius: 4px;
+            color: #050303; /* Dark gray */
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #1fa7c2; /* Teal */
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: hsl(181, 67%, 46%); /* Darker teal */
+        }
+    </style>
+</head>
+<body>
+    <!-- Include header -->
+    <header>
+        <div class="logo">
+            <img src="images/s1.png" alt="Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="navigation.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn"><i class="fas fa-bars"></i> DASHBOARD</a>
+                    <div class="dropdown-content">
+                        <a href="http://localhost/stock_table/index.html">STOCK MAINTENANCE FORM</a>
+                        <a href="http://localhost/stock_table/view.php">VIEW STOCKS</a>
+                        <a href="http://localhost/stock_table/bill.html">GENERATE BILL</a>
+                        <a href="http://localhost/stock_table/bardiagram.html">BAR DIAGRAM</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Container for main content -->
+    <div class="container">
+        <h2>Stock Maintenance Form</h2>
+        <form id="stockForm" action="addition.php" method="post" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="id">ID:</label>
+            <input type="text" id="id" name="id" required>
+
+            <label for="date-received">Date Received:</label>
+            <input type="date" id="date-received" name="date-received" required>
+
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="date" id="expiry-date" name="expiry-date" required>
+
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" name="amount" required>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('stockForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Gather form data
+            let formData = new FormData(this);
+
+            // Send the data using fetch
+            fetch('SERVER/addition.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()) // Assuming PHP returns JSON response
+            .then(data => {
+                console.log('Success:', data);
+                // Optionally, handle success behavior here (e.g., show a success message)
+                alert('Stock details submitted successfully!');
+                // Clear the form after successful submission
+                document.getElementById('stockForm').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Optionally, handle error behavior here (e.g., show an error message)
+                alert('Error submitting stock details.');
+                document.getElementById('stockForm').reset();
+            });
+        });
+    </script>
+</body>
+</html>

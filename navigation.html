@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f7f4;
+            color: #0b3954;
+        }
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('images/b1.jpg');
+            background-size: cover;
+            filter: blur(8px);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.6);
+            z-index: -1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .caremeds {
+            color: rgba(31, 167, 194, 0.9);
+        }
+
+        header {
+            background-color: #1fa7c2;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 100px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #1c7e91;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1fa7c2;
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #1c7e91;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #1fa7c2;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0b3954;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .image-item {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 250px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 220px;
+            display: block;
+            border-bottom: 2px solid #1fa7c2;
+            object-fit: cover;
+        }
+
+        .image-item p {
+            margin: 10px;
+            font-weight: bold;
+            color: #0b3954;
+        }
+
+        footer {
+            background-color: #1fa7c2;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="overlay"></div>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="images/s1.png" alt="Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> HOME</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn"><i class="fas fa-bars"></i> DASHBOARD</a>
+                    <div class="dropdown-content">
+                        <a href="http://localhost/stock_table/index.html">STOCK MAINTENANCE FORM</a>
+                        <a href="http://localhost/stock_table/view.php">VIEW STOCKS</a>
+                        <a href="http://localhost/stock_table/bill.html">GENERATE BILL</a>
+                        <a href="http://localhost/stock_table/bardiagram.html">BAR DIAGRAM</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Main Content Area -->
+    <div class="content">
+        <center>
+            <h1>Welcome to <span class="caremeds">CAREMEDS</span></h1>
+            <p>Adorning Your Health Better!</p>
+        </center>
+    </div>
+    <div class="container">
+        <h1>MEDICINE CATALOG</h1>
+        <div class="image-gallery" id="imageGallery">
+            <!-- Images will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="medicine-name"></h2>
+            <p><strong>ID:</strong> <span id="medicine-id"></span></p>
+            <p><strong>Name:</strong> <span id="medicine-name-detail"></span></p>
+            <p><strong>Date Received:</strong> <span id="date-received"></span></p>
+            <p><strong>Expiry Date:</strong> <span id="expiry-date"></span></p>
+            <p><strong>Amount:</strong> <span id="amount"></span></p>
+            <p><strong>Quantity:</strong> <span id="quantity"></span></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Footer content &copy; 2024</p>
+    </footer>
+
+    <!-- JavaScript for Modal and AJAX -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('image.php')
+                .then(response => response.json())
+                .then(data => {
+                    const gallery = document.getElementById('imageGallery');
+                    data.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'image-item';
+                        div.setAttribute('data-id', item.id);
+                        div.innerHTML = `
+                            <img src="SERVER/uploads/${item.image}" alt="${item.name}" />
+                            <p>${item.name}</p>
+                        `;
+                        div.addEventListener('click', function() {
+                            showModal(item.id);
+                        });
+                        gallery.appendChild(div);
+                    });
+                })
+                .catch(error => console.error('Error fetching images:', error));
+        });
+
+        function showModal(id) {
+            fetch(`description.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('medicine-name').textContent = data.name;
+                    document.getElementById('medicine-id').textContent = data.id;
+                    document.getElementById('medicine-name-detail').textContent = data.name;
+                    document.getElementById('date-received').textContent = data.date_received;
+                    document.getElementById('expiry-date').textContent = data.expiry_date;
+                    document.getElementById('amount').textContent = data.amount;
+                    document.getElementById('quantity').textContent = data.quantity;
+
+                    document.getElementById('modal').style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching medicine details:', error));
+        }
+
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === document.getElementById('modal')) {
+                document.getElementById('modal').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
